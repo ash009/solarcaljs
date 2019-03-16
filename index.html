@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solarcal</title>
+  <link rel="stylesheet" href="layout.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script src="data.js"></script>
+</head>
+<body>
+  <div class="main">
+    <div class="row">
+      <div class="column">
+        <input type="range" min="1" max="100" value="50" class="slider" id="sun_slider">
+        Sun scale:
+        <span id="sun_value"></span>
+      </div>
+      <div class="column">
+        <input type="range" min="1" max="10000" value="1500" class="slider" id="earth_slider">
+        Earth scale:
+        <span id="earth_value"></span>
+      </div>
+      <div class="column">
+        <input type="range" min="1" max="10000" value="1500" class="slider" id="moon_slider">
+        Moon scale:
+        <span id="moon_value"></span>
+      </div>
+      <div class="column">
+        <input type="range" min="1" max="100" value="50" class="slider" id="earth_moon_slider">
+        Earth-to-Moon scale:
+        <span id="earth_moon_value"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <input type="range" min="-365" max="365" value="0" class="slider" id="date_slider">
+        Date:
+        <span id="date_value"></span>
+      </div>
+    </div>
+    <div class="row-fill">
+      <div class="column" id='container'></div>
+      <div class="column" id='container2'></div>
+    </div>
+  </div>
+  <script src="model.js"></script>
+</body>
+</html>
