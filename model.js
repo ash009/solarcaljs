@@ -26,7 +26,6 @@ if (w > h) {
 };
 
 var camera = new THREE.OrthographicCamera( - x_width, x_width, y_height, - y_height, -2, 2 );
-//camera.position.z = 1
 // Perpective Camera for moon view
 var camera2 = new THREE.PerspectiveCamera( 90, w / h, 0.00001, 1000 );
 
@@ -80,8 +79,6 @@ earth_moon_slider.oninput = function() {
 
 // TODO: This part can be in an update function in animate rather than in the slider
 var date_str;
-var obj;
-//data[today.format("YYYY-MM-DD")]["earth"][0])
 
 var date_slider = document.getElementById("date_slider");
 var date_output = document.getElementById("date_value");
@@ -89,10 +86,6 @@ date_output.innerHTML = today.clone().add(date_slider.value, "days").format("YYY
 date_slider.oninput = function() {
   date_str = today.clone().add(this.value, "days").format("YYYY-MM-DD");
   date_output.innerHTML = date_str;
-  obj = data[date_str][0];
-  earth_pos.set(obj[0], obj[1], obj[2]);
-  obj = data[date_str][1];
-  moon_pos.set(obj[0], obj[1], obj[2]);
 };
 
 // Initialize the objects
@@ -127,20 +120,20 @@ var light = new THREE.PointLight( 0xffffff, 1, 100 );
 light.position.set( 0, 0, 0 );
 scene2.add( light );
 
-
-
-
 // Move everything around
 var earth_pos = new THREE.Vector3();
 var moon_pos = new THREE.Vector3();
-// Position from solarcal
-earth_pos.set( -9.54221512e-01, 2.81997761e-01, -5.25333210e-05 );
-moon_pos.set( -9.51957022e-01, 2.80504021e-01, -1.77732216e-04 );
-//var earth_pos = new THREE.Vector3( -9.81791257e-01, 1.67540994e-01, -4.47878036e-05 );
-//var moon_pos = new THREE.Vector3( -9.80106098e-01, 1.69518402e-01, -2.55197419e-04 );
+var obj;
 var earth_to_moon;
 var scaled_moon;
 function update_pos() {
+  date_str = date_output.innerHTML;
+
+  obj = data[date_str][0];
+  earth_pos.set(obj[0], obj[1], obj[2]);
+  obj = data[date_str][1];
+  moon_pos.set(obj[0], obj[1], obj[2]);
+
   earth_to_moon = moon_pos.clone().sub(earth_pos);
 
   // second camera is at earth looking at moon
@@ -164,11 +157,11 @@ var render = function () {
   requestAnimationFrame( render );
 
 //  controls.update();
+  // update positions
+  update_pos();
   sun.scale.setScalar(sun_output.innerHTML);
   earth.scale.setScalar(earth_output.innerHTML);
   moon.scale.setScalar(moon_output.innerHTML);
-  // update positions
-  update_pos();
 
   // Render the scene
   renderer.render(scene, camera);
