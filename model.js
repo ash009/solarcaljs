@@ -77,9 +77,7 @@ earth_moon_slider.oninput = function() {
   earth_moon_output.innerHTML = this.value;
 };
 
-// TODO: This part can be in an update function in animate rather than in the slider
 var date_str;
-
 var date_slider = document.getElementById("date_slider");
 var date_output = document.getElementById("date_value");
 date_output.innerHTML = today.clone().add(date_slider.value, "days").format("YYYY-MM-DD");
@@ -126,15 +124,22 @@ var moon_pos = new THREE.Vector3();
 var obj;
 var earth_to_moon;
 var scaled_moon;
-function update_pos() {
-  date_str = date_output.innerHTML;
+function update_all() {
+  // Update sizes
+  sun.scale.setScalar(sun_output.innerHTML);
+  earth.scale.setScalar(earth_output.innerHTML);
+  moon.scale.setScalar(moon_output.innerHTML);
 
+  // Update positions
+  date_str = date_output.innerHTML;
   obj = data[date_str][0];
   earth_pos.set(obj[0], obj[1], obj[2]);
   obj = data[date_str][1];
   moon_pos.set(obj[0], obj[1], obj[2]);
 
+  // Scale earth to moon distance
   earth_to_moon = moon_pos.clone().sub(earth_pos);
+  scaled_moon = earth_pos.clone().add(earth_to_moon.clone().multiplyScalar(earth_moon_output.innerHTML));
 
   // second camera is at earth looking at moon
   camera2.position.copy(earth_pos);
@@ -146,7 +151,6 @@ function update_pos() {
   earth.position.copy(earth_pos);
   moon.position.copy(moon_pos);
   sun.position.set(0,0,0);
-  scaled_moon = earth_pos.clone().add(earth_to_moon.clone().multiplyScalar(earth_moon_output.innerHTML));
   moon.position.copy(scaled_moon);
   moon_phase.position.copy(moon_pos);
 };
@@ -157,11 +161,7 @@ var render = function () {
   requestAnimationFrame( render );
 
 //  controls.update();
-  // update positions
-  update_pos();
-  sun.scale.setScalar(sun_output.innerHTML);
-  earth.scale.setScalar(earth_output.innerHTML);
-  moon.scale.setScalar(moon_output.innerHTML);
+  update_all();
 
   // Render the scene
   renderer.render(scene, camera);
